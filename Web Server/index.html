@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In/Up Form</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="container" id="container">
+        <div class="form-container sign-up-container">
+            <form action="#">
+                <h1>Create Account</h1>
+                <div class="social-container">
+                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+                    <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <span>or use your email for registration</span>
+                <input id="rusername" type="text" placeholder="Name" />
+                <input id="remail" type="email" placeholder="Email" />
+                <input id="rpassword" type="password" placeholder="Password" />
+                <button id="SignUp">Sign Up</button>
+            </form>
+        </div>
+        <div class="form-container sign-in-container">
+            <form action="#">
+                <h1>Sign in</h1>
+                <div class="social-container">
+                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+                    <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <span>or use your account</span>
+                <input id="lemail" type="email" placeholder="Email" />
+                <input id="lpassword" type="password" placeholder="Password" />
+                <a href="#">Forgot your password?</a>
+                <button id="SignIn">Sign In</button>
+            </form>
+        </div>
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1>Welcome Back!</h1>
+                    <p>To your favorite Smart Parking Garage</p>
+                    <button class="ghost" id="signIn">Sign In</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1>Hello, Friend!</h1>
+                    <p>Join us at the first in the world<br>Smart Parking System</p>
+                    <button class="ghost" id="signUp">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getDatabase, ref, update, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js"
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"; 
+    
+    const firebaseConfig = {
+    apiKey: "AIzaSyCKddWGVzR_pUZXHJzixfdyXWFtifmV3oM",
+    authDomain: "iot-project-eu.firebaseapp.com",
+    databaseURL: "https://iot-project-eu-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "iot-project-eu",
+    storageBucket: "iot-project-eu.appspot.com",
+    messagingSenderId: "622931504434",
+    appId: "1:622931504434:web:9520b36b780a3175d67b2b"
+  };
+    
+      const app = initializeApp(firebaseConfig);
+      const database = getDatabase(app);
+      const auth = getAuth();
+      const logInButton = document.getElementById('SignIn');
+
+      logInButton.addEventListener('click', function(e){
+    
+        var email = document.getElementById('lemail').value;
+        var password = document.getElementById('lpassword').value;
+        e.preventDefault();
+        signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+
+        const user = userCredential.user;
+
+        window.location.href = 'home.html';
+        })
+        .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        alert(errorMessage);
+    });
+});
+
+const signUpButton = document.getElementById('SignUp');
+  signUpButton.addEventListener('click', function(e){
+
+    var username = document.getElementById('rusername').value;
+    var email = document.getElementById('remail').value;
+    var password = document.getElementById('rpassword').value;
+    e.preventDefault();
+    createUserWithEmailAndPassword(auth, email, password, username)
+  .then((userCredential) => {
+    const user = userCredential.user;
+
+    set(ref(database, 'users/' + user.uid),{
+        email : email,
+        password : password,
+        username : username
+    })
+
+    alert("User Created");
+    
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    
+    alert(errorMessage);
+    });
+
+  });
+
+    </script>
+
+</html>

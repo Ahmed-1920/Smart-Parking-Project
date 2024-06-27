@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Parking Garage</title>
+    <link rel="stylesheet" href="home.css">
+    <!-- Firebase App (the core Firebase SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <!-- Firebase Realtime Database -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <!-- Font Awesome for icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Smart Parking Garage</h1>
+        
+        <div class="section">
+            <h2>Entrance Door</h2>
+            <button class="toggle-button" onclick="toggleDoor('door1')"><i class="fas fa-door-closed"></i> Open/Close</button>
+            <p id="door1-status">Closed</p>
+        </div>
+        
+        <div class="section">
+            <h2>Number of Cars</h2>
+            <p id="car-count">0</p>
+        </div>
+        
+        <div class="section">
+            <h2>Fire Alarm</h2>
+            <button class="toggle-button" onclick="toggleFireAlarm()"><i class="fas fa-bell"></i> Toggle Fire Alarm</button>
+            <p id="fire-alarm-status">Inactive</p>
+        </div>
+                
+        <div class="section">
+            <h2>Exit Door</h2>
+            <button class="toggle-button" onclick="toggleDoor('door2')"><i class="fas fa-door-closed"></i> Open/Close</button>
+            <p id="door2-status">Closed</p>
+        </div>
+
+        <div class="section">
+            <h2>User Actions</h2>
+            <button class="toggle-button" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+
+    </div>
+    <script src="home.js"></script>
+</body>
+</html>

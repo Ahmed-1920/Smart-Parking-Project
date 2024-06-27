@@ -1,0 +1,70 @@
+body {
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background: url('Images/wallpaperflare.com_wallpaper\ \(8\).jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #fff;
+}
+
+.container {
+    background: rgba(0, 0, 0, 0.7); /* Darker background with transparency */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    width: 350px;
+}
+
+h1 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #00aaff;
+}
+
+h2 {
+    margin-bottom: 10px;
+    font-size: 20px;
+    color: #00aaff;
+}
+
+.section {
+    margin-bottom: 20px;
+}
+
+.toggle-button {
+    background-color: #00aaff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.toggle-button i {
+    margin-right: 8px;
+}
+
+.toggle-button:hover {
+    background-color: #0088cc;
+}
+
+p {
+    margin: 10px 0;
+    font-size: 16px;
+    color: #fff;
+}
+
+.parking-slots p {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+}
+
+#door1-status, #door2-status, #fire-alarm-status {
+    font-weight: bold;
+}
