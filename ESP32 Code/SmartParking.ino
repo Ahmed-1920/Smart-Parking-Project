@@ -30,6 +30,8 @@ Servo myServo[2];
 
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
+
+//defining new data type with out states
 enum GateState {
   NO_REQ,
   WAITING_FOR_AUTHEN,
@@ -38,12 +40,13 @@ enum GateState {
   FIREALARM
 };
 
+// initializing all our global variables
 GateState gateState = NO_REQ;
-bool carDetected = false;
+bool carDetected = false; // car is on outer sensor
 bool openExit = false;
 bool openEntrance = false;
 bool fireAlarm = false;
-unsigned long reqInTime = 0;
+unsigned long reqInTime = 0; //takes in time when car requests to enter
 unsigned long getDataPrevMillis = 0;
 int carCount = 0;
 unsigned long entPressTime;
@@ -129,6 +132,7 @@ void loop() {
   Serial.println("Loop start");
   reconnectFirebase();
 
+//get updated data from firebase
   if (Firebase.ready() && (millis() - getDataPrevMillis > 2000 || getDataPrevMillis == 0)) {
     getDataPrevMillis = millis();
     Serial.println("Firebase is ready, fetching data...");
@@ -155,6 +159,7 @@ void loop() {
     }
   }
 
+//checks if entrance should be opened or closed
 if (openEntrance && carCount < 4 && gateState != AUTHEN_FAILED) {
     if (gateState != CAR_ENTERING) { // Only update the state and timing if we're not already in CAR_ENTERING
         myServo[0].write(45);
@@ -169,7 +174,7 @@ if (openEntrance && carCount < 4 && gateState != AUTHEN_FAILED) {
 } else {
     myServo[0].write(90);
 }
-
+//checks if exit should be opened or closed
   if (openExit) {
     myServo[1].write(134);  // Open the gate
     Serial.println("Opening exit gate");
@@ -185,11 +190,12 @@ if (openEntrance && carCount < 4 && gateState != AUTHEN_FAILED) {
   } else {
     myServo[1].write(90);
   }
-
+//gets the reading of outer sensor
   carDetected = (digitalRead(13) == LOW);
   Serial.print("carDetected: ");
   Serial.println(carDetected);
 
+// checks if there is a fire
   if (digitalRead(35) == LOW || fireAlarm) {
     Firebase.RTDB.setBool(&fbdo, "/INFO/fireAlarm", true);
     gateState = FIREALARM;
@@ -199,15 +205,16 @@ if (openEntrance && carCount < 4 && gateState != AUTHEN_FAILED) {
     Serial.println("Fire alarm triggered");
   }
 
+// main switch case with all senarios and logic
   switch (gateState) {
     case NO_REQ:
       Serial.println("State: NO_REQ");
-      if (carCount == 4 && carDetected) {
+      if (carCount == 4 && carDetected) { // parking is full
         lcd.backlight();
         lcd.setCursor(0, 0);
         lcd.print("Parking is full");
         Serial.println("Parking is full");
-      } else if (carDetected) {
+      } else if (carDetected) { //car is on outer sensor
         myServo[0].write(90);
         gateState = WAITING_FOR_AUTHEN;
         reqInTime = millis() + 5000;
@@ -219,7 +226,7 @@ if (openEntrance && carCount < 4 && gateState != AUTHEN_FAILED) {
       }
       break;
 
-    case WAITING_FOR_AUTHEN:
+    case WAITING_FOR_AUTHEN:  //car is waiting approval for entery
       Serial.println("State: WAITING_FOR_AUTHEN");
       if (millis() > reqInTime) {
         gateState = AUTHEN_FAILED;
@@ -232,7 +239,7 @@ if (openEntrance && carCount < 4 && gateState != AUTHEN_FAILED) {
       }
       break;
 
-    case AUTHEN_FAILED:
+    case AUTHEN_FAILED: // car is denied entry
       Serial.println("State: AUTHEN_FAILED");
       if (digitalRead(13) == HIGH) {
         gateState = NO_REQ;
@@ -242,7 +249,7 @@ if (openEntrance && carCount < 4 && gateState != AUTHEN_FAILED) {
       }
       break;
 
-case CAR_ENTERING:
+case CAR_ENTERING: //checks if car entered or left the entrane
     Serial.println("State: CAR_ENTERING");
     if ((digitalRead(34) == LOW) && (digitalRead(13) == HIGH)) {
         carCount = min(4, carCount + 1);
@@ -267,7 +274,7 @@ case CAR_ENTERING:
     }
     break;
 
-    case FIREALARM:
+    case FIREALARM: 
       Serial.println("State: FIREALARM");
       while (true) {
         myServo[1].write(134);
@@ -292,7 +299,8 @@ case CAR_ENTERING:
       delay(2000);
       break;
   }
-
+  
+//checks if any key is held to open/close gates
   char key = keypad.getKey();
   if (key) {
     Serial.print("Key pressed: ");
