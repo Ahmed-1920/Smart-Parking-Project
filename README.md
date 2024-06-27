@@ -90,5 +90,5 @@ The user interface is designed to be user-friendly and intuitive:
 ![Home Screen](https://github.com/Ahmed-1920/Smart-Parking-Project/blob/main/images/Picture8.png)
 
 
-### Video Link (explained in Arabic)\
+### Video Link (explained in Arabic)  
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/rtqSXsmh-Kc/0.jpg)](https://www.youtube.com/watch?v=rtqSXsmh-Kc)
