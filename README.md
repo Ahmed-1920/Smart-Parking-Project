@@ -84,7 +84,7 @@ The home page serves as the control center for the garage, providing the followi
 ### User Interface
 The user interface is designed to be user-friendly and intuitive:
 - **Sign-In and Login Pages:** Simple forms for entering email and password.
-- **Home Page:** Clearly labeled buttons for controlling the garage doors and fire alarm, and a prominently displayed car counter.
+- **Home Page:** Clearly labeled buttons for controlling the garage doors and fire alarm, and a displayed car counter.
 ![Sign in](https://github.com/Ahmed-1920/Smart-Parking-Project/blob/main/images/Picture6.png)
 ![Sign up](https://github.com/Ahmed-1920/Smart-Parking-Project/blob/main/images/Picture7.png)
 ![Home Screen](https://github.com/Ahmed-1920/Smart-Parking-Project/blob/main/images/Picture8.png)
